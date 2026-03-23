@@ -1,0 +1,2 @@
+# taklifnoma
+to'yga taklifnoma
