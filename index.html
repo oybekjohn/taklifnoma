@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bizning To'yimiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== CSS VARIABLES ===== */
+    :root {
+      --rose:     #e8395a;
+      --rose-light: #f7c5cf;
+      --rose-pale: #fdf0f2;
+      --dark:     #1a1a2e;
+      --text:     #4a4a4a;
+      --muted:    #8a8a9a;
+      --white:    #ffffff;
+      --card-bg:  rgba(255,255,255,0.97);
+      --shadow:   0 8px 60px rgba(232,57,90,0.12), 0 2px 20px rgba(0,0,0,0.08);
+    }
+
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ===== BODY / BACKGROUND ===== */
+    body {
+      min-height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+
+      /*
+       * ========================================
+       *  BACKGROUND RASMNI O'ZGARTIRISH:
+       *  Quyidagi url("...") qismiga o'z rasm
+       *  yo'lingizni yozing, masalan:
+       *  url("background.jpg")
+       * ========================================
+       */
+      background:
+        linear-gradient(rgba(0,0,0,0.38), rgba(0,0,0,0.38)),
+        url("https://images.unsplash.com/photo-1519741497674-611481863552?w=1800&q=80") center/cover no-repeat fixed;
+    }
+
+    /* ===== FLOATING HEARTS ===== */
+    .hearts-bg { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+    .heart-particle {
+      position: absolute;
+      color: rgba(232,57,90,0.25);
+      font-size: 14px;
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ===== CARD ===== */
+    .card {
+      position: relative;
+      z-index: 1;
+      background: var(--card-bg);
+      border-radius: 24px;
+      max-width: 520px;
+      width: 100%;
+      padding: 48px 44px 44px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      animation: cardIn 0.9s cubic-bezier(.22,1,.36,1) both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(40px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Decorative corner flowers */
+    .card::before, .card::after {
+      content: "✿";
+      position: absolute;
+      font-size: 28px;
+      color: var(--rose-light);
+      opacity: 0.6;
+    }
+    .card::before { top: 18px; left: 22px; }
+    .card::after  { bottom: 18px; right: 22px; transform: rotate(180deg); }
+
+    /* ===== TOP HEART ICON ===== */
+    .top-heart {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 40px;
+      background: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 12px rgba(232,57,90,0.2);
+      animation: heartBeat 1.4s ease-in-out infinite;
+    }
+    .top-heart svg { width: 20px; height: 20px; fill: var(--rose); }
+    @keyframes heartBeat {
+      0%,100% { transform: translateX(-50%) scale(1); }
+      14%     { transform: translateX(-50%) scale(1.2); }
+      28%     { transform: translateX(-50%) scale(1); }
+      42%     { transform: translateX(-50%) scale(1.15); }
+      70%     { transform: translateX(-50%) scale(1); }
+    }
+
+    /* ===== TAGLINE ===== */
+    .tagline {
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      color: var(--rose);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.3s forwards;
+    }
+
+    /* ===== MAIN TITLE ===== */
+    .title-main {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(44px, 9vw, 58px);
+      color: var(--dark);
+      line-height: 1.1;
+      margin-bottom: 12px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.45s forwards;
+    }
+
+    /* ===== NAMES ===== */
+    .names {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(28px, 6vw, 38px);
+      line-height: 1.3;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.6s forwards;
+    }
+    .names .groom { color: var(--dark); }
+    .names .amp   { color: var(--rose); font-family: 'Cormorant Garamond', serif; font-style: italic; margin: 0 8px; }
+    .names .bride { color: var(--dark); }
+
+    /* ===== DIVIDER ===== */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 auto 24px;
+      max-width: 260px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.7s forwards;
+    }
+    .divider::before, .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rose-light), transparent);
+    }
+    .divider-flower { color: var(--rose-light); font-size: 14px; }
+
+    /* ===== DATE ===== */
+    .date-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 6px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.75s forwards;
+    }
+    .date-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .date-number {
+      font-size: 52px;
+      font-weight: 300;
+      color: var(--rose);
+      font-family: 'Cormorant Garamond', serif;
+      line-height: 1;
+    }
+    .date-month {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.8s forwards;
+    }
+
+    /* ===== COUNTDOWN ===== */
+    .countdown-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--rose);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.85s forwards;
+    }
+    .countdown-label svg { width: 14px; height: 14px; stroke: var(--rose); fill: none; stroke-width: 2; }
+
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.9s forwards;
+    }
+    .cd-box {
+      background: var(--rose-pale);
+      border-radius: 12px;
+      padding: 12px 8px 8px;
+      min-width: 64px;
+      flex: 1;
+      max-width: 80px;
+    }
+    .cd-num {
+      display: block;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--rose);
+      font-family: 'Cormorant Garamond', serif;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .cd-unit {
+      display: block;
+      font-size: 8px;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* ===== QURAN VERSE ===== */
+    .verse-arabic {
+      font-size: 22px;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.6;
+      direction: rtl;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.95s forwards;
+    }
+    .verse-uz {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 16px;
+      color: var(--text);
+      margin-bottom: 18px;
+      opacity: 0;
+      animation: fadeUp 0.7s 1s forwards;
+    }
+
+    /* ===== DESCRIPTION ===== */
+    .description {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 26px;
+      opacity: 0;
+      animation: fadeUp 0.7s 1.05s forwards;
+    }
+
+    /* ===== BUTTON ===== */
+    .btn-location {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--rose);
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      padding: 14px 32px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.7s 1.1s forwards;
+      box-shadow: 0 4px 20px rgba(232,57,90,0.35);
+    }
+    .btn-location:hover {
+      background: #c72947;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(232,57,90,0.45);
+    }
+    .btn-location svg { width: 15px; height: 15px; stroke: #fff; fill: none; stroke-width: 2.2; }
+
+    /* ===== VENUE ===== */
+    .venue {
+      font-size: 12px;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeUp 0.7s 1.15s forwards;
+      line-height: 1.5;
+    }
+    .venue strong { color: var(--text); }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 480px) {
+      .card { padding: 44px 24px 32px; }
+      .cd-box { min-width: 52px; padding: 10px 6px 6px; }
+      .cd-num { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating hearts background -->
+  <div class="hearts-bg" id="heartsContainer"></div>
+
+  <!-- CARD -->
+  <div class="card">
+
+    <!-- Top heart icon -->
+    <div class="top-heart">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </div>
+
+    <!-- Tagline -->
+    <p class="tagline">Sizni hayotimizdagi eng baxtli kunga taklif qilamiz.</p>
+
+    <!-- Main title -->
+    <h1 class="title-main">Bizning to'yimiz</h1>
+
+    <!-- Names -->
+    <!--
+      ==========================================
+       ISMLARNI O'ZGARTIRISH:
+       Quyidagi "Faysulloh" va "Xonsodabegim"
+       o'rniga o'z ismlaringizni yozing
+      ==========================================
+    -->
+    <p class="names">
+      <span class="groom">Kuyov ismi</span>
+      <span class="amp">&amp;</span>
+      <span class="bride">Kelin ismi</span>
+    </p>
+
+    <!-- Divider -->
+    <div class="divider"><span class="divider-flower">❀</span></div>
+
+    <!-- Date -->
+    <!--
+      ==========================================
+       SANANI O'ZGARTIRISH:
+       "SHANBA", "18", "APREL", "SOAT 16:00"
+       qismlarini o'z sanangizga o'zgartiring.
+       Countdown uchun quyida JS qismidagi
+       weddingDate o'zgaruvchisini ham o'zgartiring.
+      ==========================================
+    -->
+    <div class="date-row">
+      <span class="date-label">Shanba</span>
+      <span class="date-number">18</span>
+      <span class="date-label">Soat 16:00</span>
+    </div>
+    <p class="date-month">Aprel</p>
+
+    <!-- Countdown -->
+    <div class="countdown-label">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      </svg>
+      Bizning unutilmas kunimizgacha
+    </div>
+    <div class="countdown">
+      <div class="cd-box"><span class="cd-num" id="cd-days">--</span><span class="cd-unit">Kun</span></div>
+      <div class="cd-box"><span class="cd-num" id="cd-hours">--</span><span class="cd-unit">Soat</span></div>
+      <div class="cd-box"><span class="cd-num" id="cd-mins">--</span><span class="cd-unit">Daqiqa</span></div>
+      <div class="cd-box"><span class="cd-num" id="cd-secs">--</span><span class="cd-unit">Soniya</span></div>
+    </div>
+
+    <!-- Quran verse -->
+    <p class="verse-arabic">وَخَلَقْنَاكُمْ أَزْوَاجًا</p>
+    <p class="verse-uz">Biz sizlarni juft-juft qilib yaratdik</p>
+
+    <!-- Description -->
+    <p class="description">
+      Sizni ushbu quvonchli kunimizda ko'rish biz uchun katta sharaf.
+    </p>
+
+    <!-- Location button -->
+    <!--
+      ==========================================
+       MANZIL HAVOLASINI O'ZGARTIRISH:
+       href="..." qismiga Google Maps yoki
+       Yandex Maps havolangizni qo'ying.
+      ==========================================
+    -->
+    <a class="btn-location" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+      </svg>
+      Manzil joylashuvini ochish
+    </a>
+
+    <!-- Venue text -->
+    <!--
+      ==========================================
+       MANZIL MATNINI O'ZGARTIRISH:
+       Quyidagi matnga o'z manzil ma'lumotingizni
+       yozing.
+      ==========================================
+    -->
+    <p class="venue">
+      To'y marosimi manzili — <strong>Guliston shahar, Bahor to'yxonasi</strong>
+    </p>
+
+  </div><!-- /card -->
+
+  <script>
+    /* ==========================================
+       COUNTDOWN — SANANI O'ZGARTIRISH:
+       Quyidagi weddingDate ga to'y sanangizni
+       kiriting: "YYYY-MM-DDTHH:MM:00"
+       Masalan: "2025-04-18T16:00:00"
+       ========================================== */
+    const weddingDate = new Date("2026-04-18T16:00:00");
+
+    function updateCountdown() {
+      const now  = new Date();
+      const diff = weddingDate - now;
+
+      if (diff <= 0) {
+        document.getElementById('cd-days').textContent  = "0";
+        document.getElementById('cd-hours').textContent = "0";
+        document.getElementById('cd-mins').textContent  = "0";
+        document.getElementById('cd-secs').textContent  = "0";
+        return;
+      }
+
+      const days  = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const mins  = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secs  = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('cd-days').textContent  = days;
+      document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+      document.getElementById('cd-mins').textContent  = String(mins).padStart(2,'0');
+      document.getElementById('cd-secs').textContent  = String(secs).padStart(2,'0');
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    /* ===== FLOATING HEARTS ===== */
+    const container = document.getElementById('heartsContainer');
+    const heartSymbols = ['♥','❤','💗','💕'];
+
+    function createHeart() {
+      const el = document.createElement('span');
+      el.className = 'heart-particle';
+      el.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+      el.style.left     = Math.random() * 100 + 'vw';
+      el.style.fontSize = (Math.random() * 12 + 8) + 'px';
+      el.style.animationDuration  = (Math.random() * 8 + 7) + 's';
+      el.style.animationDelay     = (Math.random() * 5) + 's';
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 18000);
+    }
+
+    for (let i = 0; i < 18; i++) createHeart();
+    setInterval(createHeart, 1200);
+  </script>
+
+</body>
+</html>
